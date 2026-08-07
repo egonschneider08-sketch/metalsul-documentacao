@@ -6,6 +6,7 @@ from models.cliente import Cliente
 from repositories.cliente_repository import ClienteDAO
 
 
+
 # ==========================================================
 # SUBMENU: FUNCIONÁRIOS
 # ==========================================================
@@ -282,6 +283,7 @@ def menu_cliente():
             dao.fechar()
             break
         else:
+
             print("\nOpção inválida. Tente novamente.")
 
 
@@ -295,6 +297,7 @@ def exibir_menu_principal():
     print("1. Gerenciar Funcionários")
     print("2. Gerenciar Fornecedores")
     print("3. Gerenciar Clientes")
+
     print("0. Sair do Sistema")
     print("=" * 40)
 
@@ -310,7 +313,7 @@ def main():
             menu_fornecedor()
         elif opcao == "3":
             menu_cliente()
-        elif opcao == "0":
+
             print("\nEncerrando o sistema... Até logo!")
             break
         else:
