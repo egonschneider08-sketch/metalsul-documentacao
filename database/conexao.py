@@ -16,7 +16,8 @@ class Conexao:
             dbname=self.database,
             user=self.user,
             password=self.password,
-            port=self.port
+            port=self.port,
+            options="-c search_path=empresa"  # <-- Adicione esta linha
         )
 
         self.cursor = self.conexao.cursor()

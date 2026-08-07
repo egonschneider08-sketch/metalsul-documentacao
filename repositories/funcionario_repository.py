@@ -1,7 +1,6 @@
-# Arquivo: dao.py (ou dao/funcionario_dao.py)
-
 from database.conexao import Conexao
-from models.funcionario import Funcionario # Lembre-se de importar sua model aqui
+from models.funcionario import Funcionario
+
 
 class FuncionarioDAO(Conexao):
     def __init__(self):
@@ -10,13 +9,15 @@ class FuncionarioDAO(Conexao):
 
     def inserir(self, funcionario):
         """Recebe um objeto Funcionario e o insere no banco PostgreSQL."""
+
+        # CORREÇÃO 1: Tabela alterada para 'empresa.funcionario'
+        # CORREÇÃO 2: Adicionado 'RETURNING id_funcionario' no final para o fetchone() funcionar
         sql = """
-              INSERT INTO funcionarios (nome, cpf, rg, data_nascimento, sexo, estado_civil, email, \
-                                        telefone, celular, cargo, departamento, salario, \
-                                        data_admissao, data_demissao, turno, status, observacoes) \
-              VALUES (%s, %s, %s, %s, %s, %s, %s, \
-                      %s, %s, %s, %s, %s, \
-                      %s, %s, %s, %s, %s) RETURNING id_funcionario; \
+              INSERT INTO empresa.funcionario
+              (nome, cpf, rg, data_nascimento, sexo, estado_civil, email,
+               telefone, celular, cargo, departamento, salario, data_admissao,
+               data_demissao, turno, status, observacoes)
+              VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id_funcionario;
               """
 
         valores = (
@@ -29,7 +30,6 @@ class FuncionarioDAO(Conexao):
         )
 
         try:
-            # self.cursor e self.conexao devem vir da sua classe 'Conexao'
             self.cursor.execute(sql, valores)
 
             # Atualiza o ID do objeto com o ID gerado pelo banco
@@ -46,7 +46,9 @@ class FuncionarioDAO(Conexao):
 
     def buscar_todos(self):
         """Busca todos os funcionários e retorna uma lista de objetos Funcionario."""
-        sql = "SELECT * FROM funcionarios;"
+
+        # CORREÇÃO 1: Tabela alterada para 'empresa.funcionario'
+        sql = "SELECT * FROM empresa.funcionario;"
         lista_funcionarios = []
 
         try:
@@ -70,4 +72,29 @@ class FuncionarioDAO(Conexao):
             print(f"Erro ao buscar funcionários: {e}")
             return []
 
-    # Aqui você pode adicionar no futuro: atualizar(), deletar(), buscar_por_id()...
+    def buscarFuncionario(self, id_funcionario):
+        sql = "SELECT * FROM empresa.funcionario WHERE id_funcionario = %s"
+        try:
+            self.cursor.execute(sql, (id_funcionario,))
+            resultado = self.cursor.fetchone()
+            return resultado
+        except Exception as erro:
+            print(f"Erro ao buscar funcionário! Erro: {erro}")
+            return None
+
+    def ExcluirFuncionario(self, id_funcionario):
+        sql = "DELETE FROM empresa.funcionario WHERE id_funcionario = %s"
+        try:
+            self.cursor.execute(sql, (id_funcionario,))
+            self.conexao.commit()
+            print("Funcionário excluído com sucesso!")
+        except Exception as erro:
+            self.conexao.rollback()
+            print(f"Erro ao excluir funcionário! Erro: {erro}")
+
+    def fechar(self):
+        # Assumindo que a classe Conexao tem um método fechar()
+        try:
+            super().fechar()
+        except Exception as e:
+            print(f"Erro ao fechar conexão: {e}")
