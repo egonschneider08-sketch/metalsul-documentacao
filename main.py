@@ -190,6 +190,7 @@ def menu_fornecedor():
             dao.fechar()
             break
         else:
+
             print("\nOpção inválida. Tente novamente.")
 
 
@@ -206,83 +207,6 @@ def exibir_menu_cliente():
     print("4. Excluir cliente")
     print("0. Voltar ao menu principal")
     print("=" * 40)
-
-
-def menu_cliente():
-    dao = ClienteDAO()
-
-    while True:
-        exibir_menu_cliente()
-        opcao = input("Escolha a opção desejada: ")
-
-        if opcao == "1":
-            print("\n--- Inserir Cliente ---")
-            nome = input("Nome: ")
-            cpf_cnpj = input("CPF ou CNPJ: ")
-            tipo_cliente = input("Tipo (PF/PJ) [Padrão PF]: ").upper() or "PF"
-
-            novo_cliente = Cliente(
-                tipo_cliente=tipo_cliente,
-                nome=nome,
-                cpf_cnpj=cpf_cnpj,
-                inscricao_estadual="",
-                email=f"{nome.lower().replace(' ', '.')}@cliente.com",
-                telefone="0000000000",
-                celular="00000000000",
-                cep="00000000",
-                endereco="Rua do Cliente",
-                numero="123",
-                complemento="",
-                bairro="Centro",
-                cidade="Cidade",
-                estado="UF",
-                pais="Brasil",
-                limite_credito=1000.00,
-                data_cadastro="2026-08-07",
-                status="ATIVO",
-                observacoes="Inserido via menu interativo."
-            )
-
-            dao.inserir(novo_cliente)
-
-        elif opcao == "2":
-            print("\n--- Lista de Clientes ---")
-            clientes = dao.buscar_todos()
-            if clientes:
-                for c in clientes:
-                    c_id = getattr(c, 'id_cliente', 'N/A')
-                    print(f"ID: {c_id} | Nome: {c.nome} | CPF/CNPJ: {c.cpf_cnpj} | Tipo: {c.tipo_cliente}")
-            else:
-                print("Nenhum cliente cadastrado ou erro ao buscar.")
-
-        elif opcao == "3":
-            print("\n--- Buscar Cliente ---")
-            try:
-                id_busca = int(input("Digite o ID do cliente: "))
-                resultado = dao.buscarCliente(id_busca)
-                if resultado:
-                    print(f"Cliente encontrado: {resultado}")
-                else:
-                    print("Cliente não encontrado com este ID.")
-            except ValueError:
-                print("Por favor, digite um número válido para o ID.")
-
-        elif opcao == "4":
-            print("\n--- Excluir Cliente ---")
-            try:
-                id_exclusao = int(input("Digite o ID do cliente a ser excluído: "))
-                confirmacao = input(f"Tem certeza que deseja excluir o ID {id_exclusao}? (S/N): ").upper()
-                if confirmacao == 'S':
-                    dao.ExcluirCliente(id_exclusao)
-                else:
-                    print("Exclusão cancelada.")
-            except ValueError:
-                print("Por favor, digite um número válido para o ID.")
-
-        elif opcao == "0":
-            dao.fechar()
-            break
-        else:
 
     print("0. Sair do Sistema")
     print("=" * 40)
