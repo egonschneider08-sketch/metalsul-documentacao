@@ -186,7 +186,7 @@ def menu_fornecedor():
         elif opcao == "0":
             dao.fechar()
             break
-else:
+        else:
             print("\nOpção inválida. Tente novamente.")
 
 
