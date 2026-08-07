@@ -4,8 +4,7 @@ from models.fornecedor import Fornecedor
 from repositories.fornecedor_repository import FornecedorDAO
 from models.cliente import Cliente
 from repositories.cliente_repository import ClienteDAO
-from models.categoria_produto import CategoriaProduto
-from repositories.categoria_repository import CategoriaProdutoDAO
+
 
 
 # ==========================================================
@@ -284,83 +283,7 @@ def menu_cliente():
             dao.fechar()
             break
         else:
-            print("\nOpção inválida. Tente novamente.")
 
-
-# ==========================================================
-# SUBMENU: CATEGORIAS DE PRODUTO
-# ==========================================================
-def exibir_menu_categoria():
-    print("\n" + "=" * 40)
-    print(" GERENCIAMENTO DE CATEGORIAS ".center(40))
-    print("=" * 40)
-    print("1. Inserir nova categoria")
-    print("2. Listar todas as categorias")
-    print("3. Buscar categoria por ID")
-    print("4. Excluir categoria")
-    print("0. Voltar ao menu principal")
-    print("=" * 40)
-
-
-def menu_categoria():
-    dao = CategoriaProdutoDAO()
-
-    while True:
-        exibir_menu_categoria()
-        opcao = input("Escolha a opção desejada: ")
-
-        if opcao == "1":
-            print("\n--- Inserir Categoria ---")
-            nome = input("Nome da Categoria: ")
-            descricao = input("Descrição: ")
-
-            nova_categoria = CategoriaProduto(
-                nome=nome,
-                descricao=descricao,
-                ativo=True
-            )
-
-            dao.inserir(nova_categoria)
-
-        elif opcao == "2":
-            print("\n--- Lista de Categorias ---")
-            categorias = dao.buscar_todos()
-            if categorias:
-                for cat in categorias:
-                    cat_id = getattr(cat, 'id_categoria', 'N/A')
-                    status = "Ativo" if cat.ativo else "Inativo"
-                    print(f"ID: {cat_id} | Nome: {cat.nome} | Descrição: {cat.descricao} | Status: {status}")
-            else:
-                print("Nenhuma categoria cadastrada ou erro ao buscar.")
-
-        elif opcao == "3":
-            print("\n--- Buscar Categoria ---")
-            try:
-                id_busca = int(input("Digite o ID da categoria: "))
-                resultado = dao.buscarCategoria(id_busca)
-                if resultado:
-                    print(f"Categoria encontrada: {resultado}")
-                else:
-                    print("Categoria não encontrada com este ID.")
-            except ValueError:
-                print("Por favor, digite um número válido para o ID.")
-
-        elif opcao == "4":
-            print("\n--- Excluir Categoria ---")
-            try:
-                id_exclusao = int(input("Digite o ID da categoria a ser excluída: "))
-                confirmacao = input(f"Tem certeza que deseja excluir a categoria ID {id_exclusao}? (S/N): ").upper()
-                if confirmacao == 'S':
-                    dao.ExcluirCategoria(id_exclusao)
-                else:
-                    print("Exclusão cancelada.")
-            except ValueError:
-                print("Por favor, digite um número válido para o ID.")
-
-        elif opcao == "0":
-            dao.fechar()
-            break
-        else:
             print("\nOpção inválida. Tente novamente.")
 
 
@@ -374,7 +297,7 @@ def exibir_menu_principal():
     print("1. Gerenciar Funcionários")
     print("2. Gerenciar Fornecedores")
     print("3. Gerenciar Clientes")
-    print("4. Gerenciar Categorias de Produtos")
+
     print("0. Sair do Sistema")
     print("=" * 40)
 
@@ -390,9 +313,7 @@ def main():
             menu_fornecedor()
         elif opcao == "3":
             menu_cliente()
-        elif opcao == "4":
-            menu_categoria()
-        elif opcao == "0":
+
             print("\nEncerrando o sistema... Até logo!")
             break
         else:
