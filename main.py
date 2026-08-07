@@ -284,20 +284,6 @@ def menu_cliente():
             break
         else:
 
-            print("\nOpção inválida. Tente novamente.")
-
-
-# ==========================================================
-# MENU PRINCIPAL
-# ==========================================================
-def exibir_menu_principal():
-    print("\n" + "=" * 40)
-    print(" SISTEMA DE GESTÃO DA EMPRESA ".center(40))
-    print("=" * 40)
-    print("1. Gerenciar Funcionários")
-    print("2. Gerenciar Fornecedores")
-    print("3. Gerenciar Clientes")
-
     print("0. Sair do Sistema")
     print("=" * 40)
 
